@@ -888,7 +888,7 @@ header("Content-type: text/html; charset=utf-8");
 									var index=i,file=files[i], r=new FileReader();
 									r.onload=function(evt){
 										Cmd.file_content=evt.target.result;
-										Cmd.file_name=file.fileName;
+										Cmd.file_name=file.name;
 										Cmd.file_type=file.type;
 										Cmd.send('save',function(data){
 											Page.log(Cmd.file_name+'保存成功');
@@ -903,9 +903,6 @@ header("Content-type: text/html; charset=utf-8");
 									}
 								})();
 							}
-							file.read(evt.dataTransfer.files,function(data){
-								that.code(data);
-							});
 						});
 						Cmd.send('init',function(data){
 							Page.log(data.ret);
