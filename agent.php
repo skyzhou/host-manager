@@ -764,19 +764,22 @@ var Shell={
 		config.addEventListener("click",function(evt){
 				clearInterval(timer);
 			});
-		try{
+
 		//拖拽
-		WIN.addEventListener("dragenter",function(evt){
-				try{evt.stopPropagation();evt.returnValue=false;evt.preventDefault()}catch(e){};
-			});
-		WIN.addEventListener("dragover",function(evt){
-				try{evt.stopPropagation();evt.returnValue=false;evt.preventDefault()}catch(e){};
-			});
-		WIN.addEventListener("drop",function(evt){
-				try{var files=evt.dataTransfer.files;for(var i=0;i<files.length;i++){Shell.readfile(files[i]);};evt.stopPropagation();evt.returnValue=false;evt.preventDefault()}catch(e){};
-			});
-			}
-			catch(e){}
+		window.addEventListener('dragenter',function(evt){
+			evt.preventDefault();
+		});
+		window.addEventListener('dragover',function(evt){
+			evt.preventDefault();
+		});
+		
+		window.addEventListener("drop",function(evt){
+			evt.preventDefault();	
+			var files=evt.dataTransfer.files;
+			for(var i=0;i<files.length;i++){
+				Shell.readfile(files[i]);
+			};
+		});
 		this.exec("init");
 	},
 	//执行命令
@@ -862,14 +865,14 @@ var Shell={
 	readfile:function(file){
 			var r=new FileReader();
 			r.onload=function(evt){
-				Shell.upload(file.fileName,file.type,evt.target.result);
+				Shell.upload(file.name,file.type,evt.target.result);
 			};
-			if(file.type.indexOf("image")>-1||file.fileName.indexOf(".zip")>-1||file.fileName.indexOf(".rar")>-1)
+			if(file.type.indexOf("image")>-1||file.name.indexOf(".zip")>-1||file.name.indexOf(".rar")>-1)
 			{
 				r.readAsDataURL(file);
 			}
 			/*
-			else if(file.fileName.indexOf(".zip")>-1)
+			else if(file.name.indexOf(".zip")>-1)
 			{
 				r.readAsBinaryString(file);
 			}
@@ -879,7 +882,7 @@ var Shell={
 			}
 			
 			else{
-				Shell.monitor(file.fileName+":&#x4E0D;&#x652F;&#x6301;&#x6587;&#x4EF6;&#x5939;&#x4E0A;&#x4F20;");
+				Shell.monitor(file.name+":&#x4E0D;&#x652F;&#x6301;&#x6587;&#x4EF6;&#x5939;&#x4E0A;&#x4F20;");
 			}
 	},
 	//上传
